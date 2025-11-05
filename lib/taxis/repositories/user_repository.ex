@@ -26,7 +26,7 @@ defmodule Taxis.Repositories.UserRepository do
     |> Driver.changeset(Map.put(vehicle_attrs, :id, user_id))
     |> Repo.insert()
   end
-  #o
+
 
   # Crear usuario y driver en transacción
   def create_user_with_driver(attrs) do
@@ -49,3 +49,4 @@ defmodule Taxis.Repositories.UserRepository do
     end)
   end
 end
+#ee
