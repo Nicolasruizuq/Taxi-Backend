@@ -12,7 +12,8 @@ defmodule Taxis.TravelRequest do
     belongs_to :destination_location, Taxis.Location, foreign_key: :destination_location_id
 
     # Otros campos
-    field :status, Ecto.Enum, values: [:Pendiente, :Aceptado, :Completado, :Cancelado]
+    field :status, Ecto.Enum, values: [:Pendiente, :Aceptado, :Completado, :Cancelado], default: :Pendiente
+
     field :deleted_at, :naive_datetime
 
     timestamps(inserted_at: :created_at, updated_at: :updated_at, type: :utc_datetime)
@@ -31,7 +32,6 @@ defmodule Taxis.TravelRequest do
     ])
     |> validate_required([
       :passenger_id,
-      :driver_id,
       :origin_location_id,
       :destination_location_id,
       :status

@@ -10,5 +10,8 @@ defmodule TaxisWeb.Router do
 
     post "/login", UserController, :login
     post "/register", UserController, :register
+    post "/solicitude", TravelRequestController, :solicitude
+
+    get "/solicitude", TravelRequestController, :get_solicitudes
   end
 end
