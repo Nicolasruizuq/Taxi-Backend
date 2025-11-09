@@ -54,4 +54,31 @@ defmodule TaxisWeb.TravelRequestController do
   end
 
 
+  # Consulta todas las solicitudes por status
+  def get_solicitudes_by_status(conn, %{"status" => status}) do
+    case TravelRequestService.get_solicitudes_by_status(status) do
+      {:ok, solicitudes} ->
+        json(conn, solicitudes)
+
+      {:error, reason} ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{error: reason})
+    end
+  end
+
+
+  # Actualiza datos de una solicitud
+  def update_solicitude_data(conn, %{"id" => id, "driver_id" => driver_id, "status" => status}) do
+    case TravelRequestService.update_solicitude_data(id, driver_id, status) do
+      {:ok, result} ->
+        json(conn, result)
+
+      {:error, reason} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> json(%{error: reason})
+    end
+  end
+
 end

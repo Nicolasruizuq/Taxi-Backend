@@ -17,8 +17,10 @@ defmodule TaxisWeb.Router do
     get "/solicitude", TravelRequestController, :get_solicitudes
     get "/solicitudesByPassenger/:id", TravelRequestController, :get_solicitudes_by_passenger_id
     get "/solicitudesByDriver/:id", TravelRequestController, :get_solicitudes_by_driver_id
+    get "/solicitudesByStatus/:status", TravelRequestController, :get_solicitudes_by_status
 
     # PUT Actualiza los datos
     put "/solicitudeStatusById/:id", TravelRequestController, :update_solicitude_status
+    put "/solicitudeDataById/:id", TravelRequestController, :update_solicitude_data
   end
 end

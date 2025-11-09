@@ -59,6 +59,7 @@ defmodule Taxis.Services.TravelRequestService do
     TravelRequestRepository.get_solicitudes_by_passenger_id(id)
   end
 
+  #
   def get_solicitudes_by_passenger_id(id) when is_binary(id) do
     case Integer.parse(id) do
       {passenger_id, ""} ->
@@ -74,6 +75,7 @@ defmodule Taxis.Services.TravelRequestService do
     TravelRequestRepository.get_solicitudes_by_driver_id(id)
   end
 
+  #
   def get_solicitudes_by_driver_id(id) when is_binary(id) do
     case Integer.parse(id) do
       {driver_id, ""} ->
@@ -127,5 +129,41 @@ defmodule Taxis.Services.TravelRequestService do
       }
     }
   end
+
+  #
+  def get_solicitudes_by_status(status) do
+    valid_statuses = ["Pendiente", "Aceptado", "Completado", "Cancelado"]
+
+    if status in valid_statuses do
+      solicitudes = TravelRequestRepository.get_solicitudes_by_status(status)
+      {:ok, solicitudes}
+    else
+      {:error, "Invalid status value"}
+    end
+  end
+
+  # Actualiza el estado de una solicitud
+  def update_solicitude_data(id, driver_id, status) do
+    case Integer.parse(id) do
+      {travel_id, ""} ->
+        valid_statuses = ["Pendiente", "Aceptado", "Completado", "Cancelado"]
+
+        if status in valid_statuses do
+          case TravelRequestRepository.update_solicitude_data(travel_id, driver_id, status) do
+            {:ok, travel} ->
+              {:ok, format_travel_response(travel)}
+
+            {:error, reason} ->
+              {:error, reason}
+          end
+        else
+          {:error, "Invalid status value"}
+        end
+
+      :error ->
+        {:error, "Invalid ID"}
+    end
+  end
+
 
 end
