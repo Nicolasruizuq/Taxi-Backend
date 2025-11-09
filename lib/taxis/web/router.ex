@@ -14,6 +14,7 @@ defmodule TaxisWeb.Router do
     post "/solicitude", TravelRequestController, :solicitude
 
     # Método GET obtiene datos
+    get "/profile/:id", UserController, :get_profile
     get "/solicitude", TravelRequestController, :get_solicitudes
     get "/solicitudesByPassenger/:id", TravelRequestController, :get_solicitudes_by_passenger_id
     get "/solicitudesByDriver/:id", TravelRequestController, :get_solicitudes_by_driver_id

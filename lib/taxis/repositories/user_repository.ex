@@ -5,7 +5,7 @@ defmodule Taxis.Repositories.UserRepository do
   alias Taxis.Driver
 
 
-  #Login
+  # Login
   def find_by_username_and_password(username, password) do
     User
     |> where([u], u.username == ^username and u.password == ^password)
@@ -48,4 +48,24 @@ defmodule Taxis.Repositories.UserRepository do
       Repo.preload(user, :driver)
     end)
   end
+
+  # Obtiene los datos del perfil
+  def get_profile(id) do
+    query =
+      from u in User,
+        left_join: d in Driver, on: u.id == d.id,
+        where: u.id == ^id,
+        select: %{
+          id: u.id,
+          name: u.name,
+          role_id: u.role_id,
+          username: u.username,
+          created_at: u.created_at,
+          vehicle_model: d.vehicle_model,
+          vehicle_plate: d.vehicle_plate
+        }
+
+    Repo.one(query)
+  end
+
 end

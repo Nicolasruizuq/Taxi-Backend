@@ -2,7 +2,7 @@ defmodule Taxis.Services.UserService do
   alias Taxis.Repositories.UserRepository
 
 
-  #Login
+  # Login
   def login(username, password) do
     case UserRepository.find_by_username_and_password(username, password) do
       nil ->
@@ -57,5 +57,38 @@ defmodule Taxis.Services.UserService do
         String.replace(acc, "%{#{key}}", to_string(value))
       end)
     end)
+  end
+
+  # Obtiene datos de perfil
+  def get_profile(id) do
+    case UserRepository.get_profile(id) do
+      nil ->
+        {:error, "User not found"}
+
+      %{} = user ->
+        {:ok, format_profile_response(user)}
+    end
+  end
+
+  # Formatea la respuesta JSON
+  defp format_profile_response(user) do
+    IO.inspect(user, label: "User struct", pretty: true)
+    %{
+      data: [
+        %{
+          type: "user",
+          id: to_string(user.id),
+          attributes: %{
+            id: to_string(user.id),
+            name: user.name,
+            role_id: user.role_id,
+            username: user.username,
+            created_at: user.created_at,
+            vehicle_model: user.vehicle_model,
+            vehicle_plate: user.vehicle_plate,
+          }
+        }
+      ]
+    }
   end
 end

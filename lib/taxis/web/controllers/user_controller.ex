@@ -30,4 +30,19 @@ defmodule TaxisWeb.UserController do
         |> json(%{error: message})
     end
   end
+
+
+  # Obtiene datos de perfil
+  def get_profile(conn, %{"id" => id}) do
+    case UserService.get_profile(id) do
+      {:ok, response} ->
+        json(conn, response)
+
+      {:error, message} ->
+        conn
+        |> put_status(:unauthorized)
+        |> json(%{error: message})
+    end
+  end
+
 end
