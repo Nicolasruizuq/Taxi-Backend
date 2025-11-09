@@ -49,8 +49,83 @@ defmodule Taxis.Services.TravelRequestService do
     end)
   end
 
-  # Obtener todas las solicitudes
+  # Consulta todas las solicitudes
   def get_solicitudes() do
     TravelRequestRepository.get_solicitudes()
   end
+
+  # Consulta las solicitudes por passengerId
+  def get_solicitudes_by_passenger_id(id) when is_integer(id) do
+    TravelRequestRepository.get_solicitudes_by_passenger_id(id)
+  end
+
+  def get_solicitudes_by_passenger_id(id) when is_binary(id) do
+    case Integer.parse(id) do
+      {passenger_id, ""} ->
+        TravelRequestRepository.get_solicitudes_by_passenger_id(passenger_id)
+
+      :error ->
+        {:error, :invalid_id}
+    end
+  end
+
+  # Consulta las solicitudes por driverId
+  def get_solicitudes_by_driver_id(id) when is_integer(id) do
+    TravelRequestRepository.get_solicitudes_by_driver_id(id)
+  end
+
+  def get_solicitudes_by_driver_id(id) when is_binary(id) do
+    case Integer.parse(id) do
+      {driver_id, ""} ->
+        TravelRequestRepository.get_solicitudes_by_driver_id(driver_id)
+
+      :error ->
+        {:error, :invalid_id}
+    end
+  end
+
+  # Actualiza el estado de una solicitud
+  def update_solicitude_status(id, status) do
+    case Integer.parse(id) do
+      {travel_id, ""} ->
+        valid_statuses = ["Pendiente", "Aceptado", "Completado", "Cancelado"]
+
+        if status in valid_statuses do
+          case TravelRequestRepository.update_solicitude_status(travel_id, status) do
+            {:ok, travel} ->
+              # Formateamos la respuesta antes de devolverla
+              {:ok, format_travel_response(travel)}
+
+            {:error, reason} ->
+              {:error, reason}
+          end
+        else
+           {:error, "Invalid status value"}
+        end
+
+      :error ->
+        {:error, "Invalid ID"}
+    end
+  end
+
+  # Formatea la respuesta del update de la solicitud
+  defp format_travel_response(travel) do
+    %{
+      data: %{
+        type: "travel_request",
+        id: to_string(travel.id),
+        attributes: %{
+          id: travel.id,
+          passenger_id: travel.passenger_id,
+          driver_id: travel.driver_id,
+          origin_location_id: travel.origin_location_id,
+          destination_location_id: travel.destination_location_id,
+          status: travel.status,
+          created_at: travel.created_at,
+          updated_at: travel.updated_at
+        }
+      }
+    }
+  end
+
 end
