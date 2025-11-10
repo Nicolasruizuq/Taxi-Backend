@@ -42,10 +42,10 @@ defmodule Taxis.Repositories.ResultsAndRankingRepository do
       from tr in ResultsAndRanking,
         join: us in User,
         on: us.id == tr.passenger_id,
-        group_by: [tr.passenger_id, us.name],
+        group_by: [tr.passenger_id, us.username],
         select: %{
           passenger_id: tr.passenger_id,
-          name: us.name,
+          username: us.username,
           total_passenger_points: sum(tr.passenger_points)
         },
         order_by: [desc: sum(tr.passenger_points)],
@@ -59,13 +59,13 @@ defmodule Taxis.Repositories.ResultsAndRankingRepository do
       from tr in ResultsAndRanking,
         join: us in User,
         on: us.id == tr.driver_id,
-        group_by: [tr.driver_id, us.name],
+        group_by: [tr.driver_id, us.username],
         select: %{
           driver_id: tr.driver_id,
-          name: us.name,
-          total_passenger_points: sum(tr.passenger_points)
+          username: us.username,
+          total_driver_points: sum(tr.driver_points)
         },
-        order_by: [desc: sum(tr.passenger_points)],
+        order_by: [desc: sum(tr.driver_points)],
         limit: 10
 
     Repo.all(query)
