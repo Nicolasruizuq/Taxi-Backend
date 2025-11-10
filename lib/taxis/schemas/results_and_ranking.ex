@@ -7,7 +7,8 @@ defmodule Taxis.ResultsAndRanking do
     field :passenger_points, :integer
     field :driver_points, :integer
     field :origin, :string
-    field :stattus, :string
+    field :destination, :string
+    field :status, :string
     field :deleted_at, :naive_datetime
 
     belongs_to :passenger, Taxis.User, foreign_key: :passenger_id
@@ -26,7 +27,8 @@ defmodule Taxis.ResultsAndRanking do
       :driver_id,
       :driver_points,
       :origin,
-      :stattus,
+      :destination,
+      :status,
       :deleted_at
     ])
     |> validate_required([
@@ -34,7 +36,8 @@ defmodule Taxis.ResultsAndRanking do
       :passenger_id,
       :driver_id,
       :origin,
-      :stattus
+      :destination,
+      :status
     ])
     |> foreign_key_constraint(:passenger_id)
     |> foreign_key_constraint(:driver_id)

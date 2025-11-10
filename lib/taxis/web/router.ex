@@ -12,6 +12,7 @@ defmodule TaxisWeb.Router do
     post "/login", UserController, :login
     post "/register", UserController, :register
     post "/solicitude", TravelRequestController, :solicitude
+    post "/ranking", ResultsAndRankingController, :ranking
 
     # Método GET obtiene datos
     get "/profile/:id", UserController, :get_profile
@@ -19,6 +20,8 @@ defmodule TaxisWeb.Router do
     get "/solicitudesByPassenger/:id", TravelRequestController, :get_solicitudes_by_passenger_id
     get "/solicitudesByDriver/:id", TravelRequestController, :get_solicitudes_by_driver_id
     get "/solicitudesByStatus/:status", TravelRequestController, :get_solicitudes_by_status
+    get "/rankingsByPassengers", ResultsAndRankingController, :get_rankings_by_passengers
+    get "/rankingsByDrivers", ResultsAndRankingController, :get_rankings_by_drivers
 
     # PUT Actualiza los datos
     put "/solicitudeStatusById/:id", TravelRequestController, :update_solicitude_status
