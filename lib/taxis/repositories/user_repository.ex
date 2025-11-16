@@ -3,6 +3,7 @@ defmodule Taxis.Repositories.UserRepository do
   alias Taxis.Repo
   alias Taxis.User
   alias Taxis.Driver
+  alias Taxis.ResultsAndRanking
 
 
   # Login
@@ -54,7 +55,18 @@ defmodule Taxis.Repositories.UserRepository do
     query =
       from u in User,
         left_join: d in Driver, on: u.id == d.id,
+        left_join: re in ResultsAndRanking, on: u.id == re.passenger_id,
+        left_join: rs in ResultsAndRanking, on: u.id == rs.driver_id,
         where: u.id == ^id,
+        group_by: [
+          u.id,
+          u.name,
+          u.role_id,
+          u.username,
+          u.created_at,
+          d.vehicle_model,
+          d.vehicle_plate
+        ],
         select: %{
           id: u.id,
           name: u.name,
@@ -62,7 +74,9 @@ defmodule Taxis.Repositories.UserRepository do
           username: u.username,
           created_at: u.created_at,
           vehicle_model: d.vehicle_model,
-          vehicle_plate: d.vehicle_plate
+          vehicle_plate: d.vehicle_plate,
+          total_passenger_points: sum(re.passenger_points),
+          total_driver_points: sum(rs.driver_points)
         }
 
     Repo.one(query)

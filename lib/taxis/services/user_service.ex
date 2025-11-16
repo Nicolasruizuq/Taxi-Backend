@@ -86,6 +86,9 @@ defmodule Taxis.Services.UserService do
             created_at: user.created_at,
             vehicle_model: user.vehicle_model,
             vehicle_plate: user.vehicle_plate,
+            total_passenger_points: user.total_passenger_points,
+            total_driver_points: user.total_driver_points
+
           }
         }
       ]
