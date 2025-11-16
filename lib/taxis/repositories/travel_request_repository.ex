@@ -49,6 +49,7 @@ defmodule Taxis.Repositories.TravelRequestRepository do
         join: lo_destination in Location,
         on: lo_destination.id == tr.destination_location_id,
         where: tr.passenger_id == ^id,
+        order_by: [desc: tr.created_at],
         select: %{
           travel_id: tr.id,
           passenger: us_passenger.name,
