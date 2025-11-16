@@ -1,7 +1,8 @@
 defmodule TaxisWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :taxis
 
-  plug CORSPlug, origin: ["http://localhost:8080"]
+  plug CORSPlug, origin: ["http://taxis.io:8080", "http://localhost:8080"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 
   plug Plug.Static,
     at: "/",
